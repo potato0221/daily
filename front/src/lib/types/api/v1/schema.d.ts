@@ -4,12 +4,94 @@
  */
 
 
-export type paths = Record<string, never>;
+export interface paths {
+  "/api/v1/members/logout": {
+    /** 로그아웃 */
+    post: operations["logout"];
+  };
+  "/api/v1/members/login": {
+    /** 로그인, accessToken, refreshToken 쿠키 생성됨 */
+    post: operations["login"];
+  };
+  "/api/v1/members/me": {
+    /** 회원 정보 조회 */
+    get: operations["getMe"];
+  };
+  "/api/v1/members/isLogin": {
+    /** 로그인 여부 */
+    get: operations["isLogin"];
+  };
+}
 
 export type webhooks = Record<string, never>;
 
 export interface components {
-  schemas: never;
+  schemas: {
+    Empty: Record<string, never>;
+    RsDataEmpty: {
+      resultCode: string;
+      /** Format: int32 */
+      statusCode: number;
+      msg: string;
+      data: components["schemas"]["Empty"];
+      fail: boolean;
+      success: boolean;
+    };
+    LoginRequestBody: {
+      username: string;
+      password: string;
+    };
+    LoginResponseBody: {
+      item: components["schemas"]["MemberDto"];
+    };
+    MemberDto: {
+      /** Format: int64 */
+      id: number;
+      /** Format: date-time */
+      createDate: string;
+      name: string;
+      username: string;
+      profileImgUrl: string;
+      authorities: string[];
+      exercise: boolean;
+      doStudy: boolean;
+      /** Format: int32 */
+      dailyAl: number;
+    };
+    RsDataLoginResponseBody: {
+      resultCode: string;
+      /** Format: int32 */
+      statusCode: number;
+      msg: string;
+      data: components["schemas"]["LoginResponseBody"];
+      fail: boolean;
+      success: boolean;
+    };
+    MeResponseBody: {
+      item: components["schemas"]["MemberDto"];
+    };
+    RsDataMeResponseBody: {
+      resultCode: string;
+      /** Format: int32 */
+      statusCode: number;
+      msg: string;
+      data: components["schemas"]["MeResponseBody"];
+      fail: boolean;
+      success: boolean;
+    };
+    RsDataIsLoginResponseBody: {
+      resultCode: string;
+      /** Format: int32 */
+      statusCode: number;
+      msg: string;
+      data: components["schemas"]["isLoginResponseBody"];
+      fail: boolean;
+      success: boolean;
+    };
+    isLoginResponseBody: {
+      isLogin: boolean;
+    };
+  };
   responses: never;
   parameters: never;
   requestBodies: never;
@@ -21,4 +103,55 @@ export type $defs = Record<string, never>;
 
 export type external = Record<string, never>;
 
-export type operations = Record<string, never>;
+export interface operations {
+
+  /** 로그아웃 */
+  logout: {
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["RsDataEmpty"];
+        };
+      };
+    };
+  };
+  /** 로그인, accessToken, refreshToken 쿠키 생성됨 */
+  login: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["LoginRequestBody"];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["RsDataLoginResponseBody"];
+        };
+      };
+    };
+  };
+  /** 회원 정보 조회 */
+  getMe: {
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["RsDataMeResponseBody"];
+        };
+      };
+    };
+  };
+  /** 로그인 여부 */
+  isLogin: {
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["RsDataIsLoginResponseBody"];
+        };
+      };
+    };
+  };
+}

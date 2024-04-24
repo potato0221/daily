@@ -5,13 +5,12 @@ import com.ll.daily.domain.member.member.repository.MemberRepository;
 import com.ll.daily.global.exceptions.GlobalException;
 import com.ll.daily.global.rsData.RsData;
 import com.ll.daily.global.security.SecurityUser;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.NonNull;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.List;
 import java.util.Map;
@@ -40,6 +39,11 @@ public class MemberService {
                 .username(username)
                 .password(passwordEncoder.encode(password))
                 .refreshToken(authTokenService.genRefreshToken())
+                .nickname(nickname)
+                .profileImgUrl(profileImgUrl)
+                .dailyAl(0)
+                .exercise(false)
+                .doStudy(false)
                 .build();
         memberRepository.save(member);
 
@@ -85,13 +89,14 @@ public class MemberService {
     }
 
 
-    @AllArgsConstructor
-    @Getter
-    public static class AuthAndMakeTokensResponseBody {
-        private Member member;
-        private String accessToken;
-        private String refreshToken;
-    }
+    public record AuthAndMakeTokensResponseBody(
+            @NonNull
+            Member member,
+            @NonNull
+            String accessToken,
+            @NonNull
+            String refreshToken
+    ) {}
 
     @Transactional
     public RsData<AuthAndMakeTokensResponseBody> authAndMakeTokens(String username, String password) {

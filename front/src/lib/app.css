@@ -17,3 +17,20 @@
 html > body {
 	font-family: var(--base-font-family);
 }
+
+main {
+	flex: 1;
+}
+
+footer {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	background-color: #000; /* 배경색 설정 */
+	color: white; /* 텍스트 색상 설정 */
+	text-align: center;
+	padding: 10px; /* 패딩으로 푸터 높이 조정 */
+	box-shadow: 0 0px 5px 0px rgba(0, 0, 0, 0.5);
+	z-index: 1000;
+}

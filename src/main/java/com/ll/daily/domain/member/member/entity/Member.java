@@ -24,8 +24,6 @@ import static lombok.AccessLevel.PROTECTED;
 @ToString(callSuper = true)
 public class Member extends BaseEntity {
 
-    private int registerCount;
-
     @Column(unique = true, length = 100)
     private String username;
 
@@ -41,12 +39,11 @@ public class Member extends BaseEntity {
     private String profileImgUrl;
 
     @Builder.Default
-    private int dailyAl = 3;
+    private int dailyAl = 0;
 
-    private int dailyAchievement;
+    private boolean exercise;
 
-    private String uuid;
-
+    private boolean doStudy;
 
     public String getProfileImgUrlOrDefault() {
         return Ut.str.hasLength(profileImgUrl) ? profileImgUrl : "https://placehold.co/640x640?text=O_O";
